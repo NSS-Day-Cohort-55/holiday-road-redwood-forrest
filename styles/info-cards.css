@@ -8,3 +8,14 @@
     background-size: cover;
     padding: 2em;
 }
+
+.attraction .info__text {
+    background-color: #744838;
+    padding: 5em;
+}
+
+.attraction .info__banner {
+    background-image: url("../pictures/ferris_wheel.jpg");
+    background-size: cover;
+    padding: 2em;
+}
