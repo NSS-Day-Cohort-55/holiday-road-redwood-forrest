@@ -1,0 +1,10 @@
+.eatery .info__text {
+    background-color: #DFA408;
+    padding: 5em;
+}
+
+.eatery .info__banner {
+    background-image: url("../pictures/eatery_image.jpg");
+    background-size: cover;
+    padding: 2em;
+}
