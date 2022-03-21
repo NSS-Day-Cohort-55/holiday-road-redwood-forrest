@@ -209,6 +209,7 @@ Team members:
 - Punam Ahire
 
 Wireframe:
+Figma: https://www.figma.com/file/wS4AJT4OGLBmqQmCCdopKJ/Untitled?node-id=2%3A2
 
 ERD:
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](ERD-holiday-trip.png "Title")
