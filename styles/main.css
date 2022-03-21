@@ -14,3 +14,8 @@ li, ul {
 .park h1 {
     text-align: center;
 }
+
+.dropdownHeader {
+    display: flex;
+    justify-content: space-around;
+}

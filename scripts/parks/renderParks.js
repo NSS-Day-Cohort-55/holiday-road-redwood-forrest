@@ -6,6 +6,7 @@ export const renderPark = (park) => {
 
     //build park section
     parkEl.innerHTML = buildPark(park)
+    //renderWeather once park is complete
     renderWeather(park)
 }
 
