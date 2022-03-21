@@ -1,0 +1,16 @@
+.weather__forecast {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0
+}
+
+.weather__container h3 {
+    text-align: center;
+}
+
+.weather__list {
+    list-style-type: none;
+    padding: .5em;
+    margin: 0;
+}
