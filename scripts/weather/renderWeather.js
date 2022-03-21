@@ -5,7 +5,7 @@ export const renderWeather = (park) => {
     const weatherEl = document.querySelector('.weather__container')
 
     //fetch weather data based on park latitude and longitude, then build weather section
-    getWeatherData(34, -86)
+    getWeatherData(park.latitude, park.longitude)
     .then(() => weatherEl.innerHTML = buildWeather())
 }
 

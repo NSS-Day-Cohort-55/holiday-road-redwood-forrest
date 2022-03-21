@@ -1,4 +1,4 @@
-import { renderWeather } from "../weather/renderWeather"
+import { renderWeather } from "../weather/renderWeather.js"
 
 export const renderPark = (park) => {
     //select park element
@@ -31,6 +31,6 @@ const buildPark = (park) => {
 
 const buildActivities = (park) => {
     let activityString = ""
-    park.forEach(activity => activityString += `<li>${activity.name}</li>`)
+    park.activities.forEach(activity => activityString += `<li>${activity.name}</li>`)
     return activityString
 }
