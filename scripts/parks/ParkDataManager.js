@@ -1,7 +1,7 @@
-let apiParks = [];
+let apiParks;
 
 export const useParks = () => {
-  return [...apiParks]
+  return {...apiParks}
 }
 
 export const loadParks = (stateCode) => {
@@ -12,3 +12,8 @@ export const loadParks = (stateCode) => {
       return parksArray
     })
 };
+
+//return parkobj from park dataset using parkID
+export const getParkObj = (parkID) => {
+  return useParks().data.find(element => element.id === parkID)
+}
