@@ -1,6 +1,7 @@
 @import "./info-cards.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import "./weather.css";
+@import "./footer.css";
 
 body {
     font-family: 'Roboto', sans-serif;
