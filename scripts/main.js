@@ -1,3 +1,5 @@
+import { renderAttraction } from "./attractions/renderAttraction.js";
+import { renderEatery } from "./eateries/renderEatery.js"
 import { renderPark } from "./parks/renderParks.js";
 import { renderWeather } from "./weather/renderWeather.js";
 import { loadStates, useStates } from "./states/statesDataManager.js";
@@ -47,16 +49,26 @@ const startHolidayTrip = () => {
         // console.log(stateData);
         stateList(stateData)
     })
-    
+
     loadEateries().then(eateryData => {
         // console.log(eateryData);
-        eateryList(eateryData)
+        eateryList(eateryData);
+        // Listener for eatery selection
+        const eateryDropdown = document.querySelector("#eateryDropdown");
+        eateryDropdown.addEventListener("change", (event) => {
+            renderEatery(parseInt(event.target.value));
+        })
     });
-    
+
     loadAttractions().then(attractionData => {
         // console.log(attractionData);
         attractionList(attractionData)
-    
+
+        // Listener for attraction selection
+        const attractionDropdown = document.querySelector("#attractionDropdown");
+        attractionDropdown.addEventListener("change", (event) => {
+            renderAttraction(parseInt(event.target.value));
+        })
     });
 
 }
