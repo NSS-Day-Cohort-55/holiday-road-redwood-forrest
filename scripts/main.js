@@ -16,7 +16,29 @@ header.addEventListener("change", event => {
         loadParks(event.target.value).then(parkData => {
             // console.log(parkData);
             parkList(parkData.data)
-        });
+
+            //listener for park selection
+            document.addEventListener("change", event => {
+            
+                const parkDDEl = document.querySelector("#parkDropdown")
+                if (event.target.id === "parkDropdown") {
+                    const selectedPark = getParkObj(event.target.value)
+                    renderPark(selectedPark)
+                    
+                    //set up event listener for modal selection
+                    const parkModal = document.querySelector(".park__modal")
+                    
+                    document.addEventListener("click", event => {
+                        if (event.target.id === 'show_park_amenities') {
+                            parkModal.showModal()
+                        }
+                        if (event.target.id === 'close_park_amenities') {
+                            parkModal.close()
+                        }
+                    })
+                }
+            })
+        })
     }   
 })
 
@@ -39,26 +61,3 @@ const startHolidayTrip = () => {
 
 }
 startHolidayTrip()
-
-
-//listener for park selection
-document.addEventListener("change", event => {
-
-    const parkDDEl = document.querySelector("#parkDropdown")
-    if (event.target.id === "parkDropdown") {
-        const selectedPark = getParkObj(event.target.value)
-        renderPark(selectedPark)
-        
-        //set up event listener for modal selection
-        const parkModal = document.querySelector(".park__modal")
-        
-        document.addEventListener("click", event => {
-            if (event.target.id === 'show_park_amenities') {
-                parkModal.showModal()
-            }
-            if (event.target.id === 'close_park_amenities') {
-                parkModal.close()
-            }
-        })
-    }
-})

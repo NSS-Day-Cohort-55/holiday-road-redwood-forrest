@@ -10,24 +10,40 @@ export const renderWeather = (park) => {
 }
 
 const buildWeather = () => {
-    let htmlString = `
+    return `
     <h3> 5 day forecast for ${useWeather().city.name}</h3>
     <ul class="weather__forecast">
+    ${weatherStats()}
+    </ul
     `
+}
+
+const weatherStats = () => {
+    let htmlString = ''
     //park data comes with a forecast every 3 hours for 5 days (40 entries), so we skip 8 indexes (24hrs) each loop
     for (let i = 0; i < 40; i += 8) {
+        let high = -999999
+        let low = 9999999
+        let feelsLike = 0
+        for (let j = i; j < i + 8; j++) {
+            if (useWeather().list[j].main.temp_max > high) {
+                high = useWeather().list[j].main.temp_max
+            }
+            if (useWeather().list[j].main.temp_min < low){
+                low = useWeather().list[j].main.temp_min
+            }
+            feelsLike += useWeather().list[j].main.feels_like
+        }
         htmlString += `
             <ul class="weather__list">
-                <li class="weather__info">High: ${useWeather().list[i].main.temp_max}&deg;F</li>
-                <li class="weather__info">Low: ${useWeather().list[i].main.temp_min}&deg;F</li>
-                <li class="weather__info">Feels-like: ${useWeather().list[i].main.feels_like}&degF</li>
+                <li class="weather__info">High: ${high}&deg;F</li>
+                <li class="weather__info">Low: ${low}&deg;F</li>
+                <li class="weather__info">Feels-like: ${feelsLike / 8}&deg;F</li>
                 <li class="weather__info">Forecast: ${useWeather().list[i].weather[0].description}</li>
                 <br>
                 <li class="weather__info">Date: ${useWeather().list[i].dt_txt.split(" ")[0]}</li>
             </ul>        
         `
     }
-    htmlString += "</ul>"
-    
     return htmlString
 }
