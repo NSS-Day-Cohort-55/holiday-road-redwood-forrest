@@ -1,6 +1,7 @@
 import * as renderHelpers from "../helpers/renderHelpers.js";
+import { useEateries } from "./EateryDataManager.js";
 
-export const renderEatery = (eateryName) => {
+export const renderEatery = (eateryId) => {
     // HTML Generator Helper Function
     const generateHTML = (eateryObj) => {
         return `
@@ -14,7 +15,7 @@ export const renderEatery = (eateryName) => {
                 <dialog id="eateryDialog">
                     <h2>Amenities</h2>
                     <ul>
-                        ${renderHelpers.getAllAmenties(eateryObj.ameneties)}
+                        ${renderHelpers.getAllAmenities(eateryObj.ameneties)}
                     </ul>
                     <button id="eateryDialogCloseButton">Close</button>
                 </dialog>
@@ -26,25 +27,27 @@ export const renderEatery = (eateryName) => {
 
 
     // Get data here
+    let searchVar = useEateries().find(element => element.id === eateryId);
+    let eateryElement = document.querySelector(".eatery");
 
-    // Hardcoded data for testing purposes
-    return fetch("http://holidayroad.nss.team/eateries")
-    .then( data => data.json() )
-    .then( dataJson => {
-        let searchVar = dataJson.find(element => element.businessName === eateryName);
-        // Maybe see if there is already eatery html generated in DOM?
-        // Insert Eatery html into the DOM
-        document.querySelector("body").insertAdjacentHTML('beforeend', generateHTML(searchVar));
+    // Insert eatery info
+    eateryElement.innerHTML = generateHTML(searchVar);
 
-        let eateryDialogElement = document.getElementById("eateryDialog");
-        
-        // Event listener to show amenities
-        document.getElementById("eateryAmenitiesButton").addEventListener("click", () => {
-            eateryDialogElement.showModal();
-        })
-        // Event listener for amenities close button
-        document.getElementById("eateryDialogCloseButton").addEventListener("click", () => {
-            eateryDialogElement.close();
-        })
+    let eateryDialogElement = document.getElementById("eateryDialog");
+    
+    // Event listener to show amenities
+    document.getElementById("eateryAmenitiesButton").addEventListener("click", () => {
+        eateryDialogElement.showModal();
     })
+    // Event listener for amenities close button
+    document.getElementById("eateryDialogCloseButton").addEventListener("click", () => {
+        eateryDialogElement.close();
+    })
+
+
+    // // Hardcoded data for testing purposes
+    // return fetch("http://holidayroad.nss.team/eateries")
+    // .then( data => data.json() )
+    // .then( dataJson => {
+    // })
 }

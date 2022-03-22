@@ -1,6 +1,7 @@
 import * as renderHelpers from "../helpers/renderHelpers.js";
+import { useAttractions } from "./AttractionDataManager.js";
 
-export const renderAttraction = (attractionName) => {
+export const renderAttraction = (attractionId) => {
     // HTML Generator Helper Function
     const generateHTML = (attractionObj) => {
         return `
@@ -14,7 +15,7 @@ export const renderAttraction = (attractionName) => {
                 <dialog id="attractionsDialog">
                     <h2>Amenities</h2>
                     <ul>
-                        ${renderHelpers.getAllAmenties(attractionObj.ameneties)}
+                        ${renderHelpers.getAllAmenities(attractionObj.ameneties)}
                     </ul>
                     <button id="attractionsDialogCloseButton">Close</button>
                 </dialog>
@@ -26,26 +27,22 @@ export const renderAttraction = (attractionName) => {
 
 
     // Get data here
+    let searchVar = useAttractions().find(element => element.id === attractionId);
+    let attractionElement = document.querySelector(".attraction");
+   
+    // Insert attraction html at target element
+    attractionElement.innerHTML = generateHTML(searchVar);
 
-    // Hardcoded data for testing purposes
-    return fetch("http://holidayroad.nss.team/bizarreries")
-    .then( data => data.json() )
-    .then( dataJson => {
-        let searchVar = dataJson.find(element => element.name === attractionName);
-        // Maybe see if there is already one generated here?
-        // Insert attraction html into DOM
-        document.querySelector("body").insertAdjacentHTML('beforeend', generateHTML(searchVar));
+    let attractionsDialogElement = document.getElementById("attractionsDialog");
 
-        let attractionsDialogElement = document.getElementById("attractionsDialog");
+    // Setup event listener to show modal on click
+    document.getElementById("attractionsAmenitiesButton").addEventListener("click", () => {
+        attractionsDialogElement.showModal();
+    })
 
-        // Setup event listener to show modal on click
-        document.getElementById("attractionsAmenitiesButton").addEventListener("click", () => {
-            attractionsDialogElement.showModal();
-        })
+    // Setup event lister to close modal
+    document.getElementById("attractionsDialogCloseButton").addEventListener("click", () => {
+        attractionsDialogElement.close();
 
-        // Setup event lister to close modal
-        document.getElementById("attractionsDialogCloseButton").addEventListener("click", () => {
-            attractionsDialogElement.close();
-        })
     })
 }
