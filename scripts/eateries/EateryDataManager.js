@@ -12,5 +12,4 @@ return fetch(`http://holidayroad.nss.team/eateries`)
       return eateryArray
     })
 };
-
 // ?state=${parkCode.split('-')[0]}

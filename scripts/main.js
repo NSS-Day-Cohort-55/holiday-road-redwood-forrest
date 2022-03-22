@@ -1,3 +1,5 @@
+import { renderAttraction } from "./attractions/renderAttraction.js";
+import { renderEatery } from "./eateries/renderEatery.js"
 import { renderPark } from "./parks/renderParks.js";
 import { renderWeather } from "./weather/renderWeather.js";
 import { loadStates, useStates } from "./states/statesDataManager.js";
@@ -17,7 +19,7 @@ header.addEventListener("change", event => {
             // console.log(parkData);
             parkList(parkData.data)
         });
-    }   
+    }
 })
 
 const startHolidayTrip = () => {
@@ -25,16 +27,26 @@ const startHolidayTrip = () => {
         // console.log(stateData);
         stateList(stateData)
     })
-    
+
     loadEateries().then(eateryData => {
         // console.log(eateryData);
-        eateryList(eateryData)
+        eateryList(eateryData);
+        // Listener for eatery selection
+        const eateryDropdown = document.querySelector("#eateryDropdown");
+        eateryDropdown.addEventListener("change", (event) => {
+            renderEatery(parseInt(event.target.value));
+        })
     });
-    
+
     loadAttractions().then(attractionData => {
         // console.log(attractionData);
         attractionList(attractionData)
-    
+
+        // Listener for attraction selection
+        const attractionDropdown = document.querySelector("#attractionDropdown");
+        attractionDropdown.addEventListener("change", (event) => {
+            renderAttraction(parseInt(event.target.value));
+        })
     });
 
 }
@@ -48,10 +60,10 @@ document.addEventListener("change", event => {
     if (event.target.id === "parkDropdown") {
         const selectedPark = getParkObj(event.target.value)
         renderPark(selectedPark)
-        
+
         //set up event listener for modal selection
         const parkModal = document.querySelector(".park__modal")
-        
+
         document.addEventListener("click", event => {
             if (event.target.id === 'show_park_amenities') {
                 parkModal.showModal()
