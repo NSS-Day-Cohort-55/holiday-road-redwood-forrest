@@ -10,6 +10,7 @@ import { loadEateries } from "./eateries/EateryDataManager.js";
 import { eateryList } from "./eateries/eateryList.js";
 import { loadAttractions } from "./attractions/AttractionDataManager.js";
 import { attractionList } from "./attractions/attractionList.js"
+import { renderFooter } from "./footer/renderFooter.js";
 
 const header = document.querySelector(".dropdownHeader")
 
@@ -51,6 +52,7 @@ const startHolidayTrip = () => {
 
 }
 startHolidayTrip()
+renderFooter()
 
 
 //listener for park selection
