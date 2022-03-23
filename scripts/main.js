@@ -12,6 +12,7 @@ import { loadAttractions, useAttractions } from "./attractions/AttractionDataMan
 import { attractionList } from "./attractions/attractionList.js"
 import { createTrip } from "./trips/TripDataManager.js";
 import { renderTrips } from "./trips/renderTrips.js"
+import {loadTrips, getTrips} from "./trips/TripDataManager.js"
 
 let parkDDSel = false;
 let eateryDDSel = false; 
@@ -87,6 +88,7 @@ saveTripBtn.addEventListener("click", (event) => {
 })
 
 const startHolidayTrip = () => {
+
     saveTripBtn.disabled = true;
 
     loadStates().then(stateData => {

@@ -1,3 +1,4 @@
+import { renderDirectionsModal } from "../directions/renderDirectionsModal.js"
 
 export const renderTrips = (tripObj) => {
     const tripEl = document.querySelector(".tripInfo")
@@ -11,4 +12,8 @@ export const renderTrips = (tripObj) => {
                         </div>
                     </section>`
     tripEl.innerHTML += tripHTML
+
+    tripEl.querySelector(".savedTrip > .tripButtons > .directionsBtn").addEventListener("click", () => {
+        renderDirectionsModal(tripObj)
+    })
 }
