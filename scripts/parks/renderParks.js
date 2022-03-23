@@ -10,6 +10,7 @@ export const renderPark = (park) => {
     renderWeather(park)
 }
 
+//build park section based on selected park
 const buildPark = (park) => {
     let htmlString = `
     <h2>${park.fullName}</h2>
@@ -29,6 +30,7 @@ const buildPark = (park) => {
     return htmlString
 }
 
+//helper function to build park activities modal
 const buildActivities = (park) => {
     let activityString = ""
     park.activities.forEach(activity => activityString += `<li>${activity.name}</li>`)

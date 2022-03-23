@@ -24,6 +24,10 @@ li, ul {
     display: flex;
 }
 
+.modal {
+    max-width: 56ch;
+}
+
 .mainPreview {
     flex: 5;
     margin: 0;
