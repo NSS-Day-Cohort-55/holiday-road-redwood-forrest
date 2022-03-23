@@ -1,7 +1,7 @@
 import { renderAttraction } from "./attractions/renderAttraction.js";
 import { renderEatery } from "./eateries/renderEatery.js"
-import { renderEventsModal, renderPark } from "./parks/renderParks.js";
-import { renderWeather } from "./weather/renderWeather.js";
+import { renderPark } from "./parks/renderParks.js";
+import { renderEventsModal } from "./parks/parkEvents.js";
 import { loadStates } from "./states/statesDataManager.js";
 import { stateList } from "./states/stateList.js";
 import { loadParks, getParkObj, getEvents } from "./parks/ParkDataManager.js";
@@ -10,22 +10,19 @@ import { loadEateries, useEateries } from "./eateries/EateryDataManager.js";
 import { eateryList } from "./eateries/eateryList.js";
 import { loadAttractions, useAttractions } from "./attractions/AttractionDataManager.js";
 import { attractionList } from "./attractions/attractionList.js"
-import { createTrip } from "./trips/TripDataManager.js";
+import { createTrip, getTrips, useTrips } from "./trips/TripDataManager.js";
 import { renderTrips } from "./trips/renderTrips.js"
+import { renderFooter } from "./footer/renderFooter.js";
 
+//state variables for DD selections
 let parkDDSel = false;
 let eateryDDSel = false;
 let attractionDDSel = false;
-let saveTripBtn = document.getElementById("saveTripBtn")
-import { renderFooter } from "./footer/renderFooter.js";
 
+const saveTripBtn = document.getElementById("saveTripBtn")
 const header = document.querySelector(".dropdownHeader")
 
-<<<<<<< HEAD
-//event listener for state dropdown, once state has been selected, we add listener for parks
-=======
-// populate parks in the dropdown
->>>>>>> main
+//event listener for state dropdown, once state has been selected, we add listener for parks modal
 header.addEventListener("change", event => {
     if (event.target.id === "stateDropdown") {
         loadParks(event.target.value).then(parkData => {
@@ -36,6 +33,8 @@ header.addEventListener("change", event => {
             document.addEventListener("change", event => {
 
                 if (event.target.id === "parkDropdown") {
+                    parkDDSel = true;
+
                     const selectedPark = getParkObj(event.target.value)
                     renderPark(selectedPark)
 
@@ -48,6 +47,7 @@ header.addEventListener("change", event => {
                         if (event.target.id === 'close_park_amenities') {
                             parkModal.close()
                         }
+                        return event
                     })
                 }
             })
@@ -55,6 +55,23 @@ header.addEventListener("change", event => {
     }
 })
 
+//listener for show park events buttons
+document.addEventListener("click", event => {
+    if (event.target.id.split("--")[0] === "getEvents") {
+        let foundTrip = useTrips().filter(element => element.id === parseInt(event.target.id.split("--")[1]))
+        getEvents(foundTrip[0].parkCode)
+            .then(events => {
+                console.log(document.querySelector(".parkEventsModal"))
+                renderEventsModal(events)
+            })
+        document.querySelector(".parkEventsModal").showModal()
+    }
+    if (event.target.id === 'closeParkEvents') {
+        document.querySelector(".parkEventsModal").close()
+    }
+})
+
+//logic for when saveTrip is active
 const enableButton = () => {
     if (parkDDSel === true &&
         eateryDDSel === true &&
@@ -64,11 +81,13 @@ const enableButton = () => {
         saveTripBtn.style.color = 'white';
     }
 }
+
 // event listener for enabling save trip button
 document.addEventListener("change", (event) => {
     enableButton()
 })
 
+//once the save trip button is clicked the trip object is built
 const buildTripObj = () => {
     //collect the input values into an object to save in the DB
     const parkDDEl = document.getElementById("parkDropdown")
@@ -81,7 +100,7 @@ const buildTripObj = () => {
     const attDDEl = document.getElementById("attractionDropdown")
     const attName = attDDEl.options[attDDEl.selectedIndex].text;
 
-    console.log(parkName, eateryName, attName);
+    // console.log(parkName, eateryName, attName);
     const tripObject = {
         park: parkName,
         parkCode: parkCode,
@@ -99,7 +118,7 @@ saveTripBtn.addEventListener("click", (event) => {
 
         const newTrip = buildTripObj()
         createTrip(newTrip)
-        renderTrips(newTrip)
+            .then(response => renderTrips(response))
 
         // disable the buton after saving each trip
         if (saveTripBtn.disabled === false) {
@@ -107,9 +126,47 @@ saveTripBtn.addEventListener("click", (event) => {
             saveTripBtn.style.color = "black"
             saveTripBtn.style.backgroundColor = "lightgrey"
         }
+
+        //reset the website state after click
+        resetTrip()
     }
 })
 
+const resetTrip = () => {
+    const stateDD = document.querySelector(".stateDD")
+    const eateryDD = document.querySelector(".eateryDD")
+    const attractionDD = document.querySelector(".attractionDD")
+    const parkDiv = document.querySelector(".parkDropdownDiv")
+    const tripPreview = document.querySelector(".mainPreview")
+
+    for (let dropdown of [stateDD, eateryDD, attractionDD]) {
+        dropdown.selectedIndex = 0
+    }
+    //remove parkselection, since state is no longer selected
+    parkDiv.innerHTML = ''
+
+    //reset trip preview section
+    tripPreview.innerHTML = `
+            <section class="park">
+            
+                <!-- park info here -->
+            
+                <section class="weather__container">
+                    <!-- weather data goes here -->
+                </section> 
+            
+            </section>
+        
+            <div class="eatery"></div> 
+            <div class="attraction"></div>
+    `
+    // reset selection states
+    parkDDSel = false;
+    eateryDDSel = false;
+    attractionDDSel = false;
+}
+
+//app startup
 const startHolidayTrip = () => {
     saveTripBtn.disabled = true;
 
@@ -138,38 +195,10 @@ const startHolidayTrip = () => {
             renderAttraction(parseInt(event.target.value));
         })
     });
+    //populate trips in the aside
+    getTrips()
+        .then(response => response.forEach(trip => renderTrips(trip)))
+    //build footer
+    renderFooter()
 }
 startHolidayTrip()
-renderFooter()
-
-getEvents('abli')
-    .then(events => renderEventsModal(events))
-    .then(() => { })
-
-
-//listener for park selection
-document.addEventListener("change", event => {
-
-    const parkDDEl = document.querySelector("#parkDropdown")
-    if (event.target.id === "parkDropdown") {
-        parkDDSel = true;
-        const selectedPark = getParkObj(event.target.value)
-        renderPark(selectedPark)
-
-        //set up event listener for modal selection
-        const parkModal = document.querySelector(".park__modal")
-
-        document.addEventListener("click", event => {
-            if (event.target.id === 'getEvents') {
-                document.querySelector(".parkEventsModal").showModal()
-            }
-
-            document.addEventListener("click", event => {
-                if (event.target.id === "closeParkEvents") {
-                    document.querySelector(".parkEventsModal").close()
-                }
-            })
-            return event
-        })
-    }
-})
