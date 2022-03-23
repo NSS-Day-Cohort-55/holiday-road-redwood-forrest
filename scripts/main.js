@@ -1,10 +1,10 @@
 import { renderAttraction } from "./attractions/renderAttraction.js";
 import { renderEatery } from "./eateries/renderEatery.js"
-import { renderPark } from "./parks/renderParks.js";
+import { renderEventsModal, renderPark } from "./parks/renderParks.js";
 import { renderWeather } from "./weather/renderWeather.js";
-import { loadStates, useStates } from "./states/statesDataManager.js";
+import { loadStates } from "./states/statesDataManager.js";
 import { stateList } from "./states/stateList.js";
-import { loadParks, useParks, getParkObj } from "./parks/ParkDataManager.js";
+import { loadParks, getParkObj, getEvents } from "./parks/ParkDataManager.js";
 import { parkList } from "./parks/parkList.js";
 import { loadEateries } from "./eateries/EateryDataManager.js";
 import { eateryList } from "./eateries/eateryList.js";
@@ -13,6 +13,7 @@ import { attractionList } from "./attractions/attractionList.js"
 
 const header = document.querySelector(".dropdownHeader")
 
+//event listener for state dropdown, once state has been selected, we add listener for parks
 header.addEventListener("change", event => {
     if (event.target.id === "stateDropdown") {
         loadParks(event.target.value).then(parkData => {
@@ -21,15 +22,13 @@ header.addEventListener("change", event => {
 
             //listener for park selection
             document.addEventListener("change", event => {
-            
-                const parkDDEl = document.querySelector("#parkDropdown")
+
                 if (event.target.id === "parkDropdown") {
                     const selectedPark = getParkObj(event.target.value)
                     renderPark(selectedPark)
-                    
+
                     //set up event listener for modal selection
                     const parkModal = document.querySelector(".park__modal")
-                    
                     document.addEventListener("click", event => {
                         if (event.target.id === 'show_park_amenities') {
                             parkModal.showModal()
@@ -41,7 +40,7 @@ header.addEventListener("change", event => {
                 }
             })
         })
-    }   
+    }
 })
 
 const startHolidayTrip = () => {
@@ -73,3 +72,21 @@ const startHolidayTrip = () => {
 
 }
 startHolidayTrip()
+
+
+getEvents('abli')
+    .then(events => renderEventsModal(events))
+    .then(() => {
+        document.addEventListener("click", event => {
+            if (event.target.id === 'getEvents') {
+                document.querySelector(".parkEventsModal").showModal()
+            }
+
+            document.addEventListener("click", event => {
+                if (event.target.id === "closeParkEvents") {
+                    document.querySelector(".parkEventsModal").close()
+                }
+            })
+            return event
+        })
+    })

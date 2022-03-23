@@ -14,7 +14,7 @@ const buildWeather = () => {
     <h3> 5 day forecast for ${useWeather().city.name}</h3>
     <ul class="weather__forecast">
     ${weatherStats()}
-    </ul
+    </ul>
     `
 }
 
@@ -25,6 +25,9 @@ const weatherStats = () => {
         let high = -999999
         let low = 9999999
         let feelsLike = 0
+
+        //in order to calculate the average feels-like, high, and low temperatures, we loop through each day's worth 
+        //of weather data and find highest high, lowest low, and running tally of feelsLike (to get average after looping)
         for (let j = i; j < i + 8; j++) {
             if (useWeather().list[j].main.temp_max > high) {
                 high = useWeather().list[j].main.temp_max
@@ -34,11 +37,13 @@ const weatherStats = () => {
             }
             feelsLike += useWeather().list[j].main.feels_like
         }
+        //divide by 8 (24 hours) to get feelsLike average
+        feelsLike /= 8
         htmlString += `
             <ul class="weather__list">
                 <li class="weather__info">High: ${high}&deg;F</li>
                 <li class="weather__info">Low: ${low}&deg;F</li>
-                <li class="weather__info">Feels-like: ${feelsLike / 8}&deg;F</li>
+                <li class="weather__info">Feels-like: ${feelsLike.toFixed(2)}&deg;F</li>
                 <li class="weather__info">Forecast: ${useWeather().list[i].weather[0].description}</li>
                 <br>
                 <li class="weather__info">Date: ${useWeather().list[i].dt_txt.split(" ")[0]}</li>
