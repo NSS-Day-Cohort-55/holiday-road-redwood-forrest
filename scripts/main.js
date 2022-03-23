@@ -61,7 +61,6 @@ document.addEventListener("click", event => {
         let foundTrip = useTrips().filter(element => element.id === parseInt(event.target.id.split("--")[1]))
         getEvents(foundTrip[0].parkCode)
             .then(events => {
-                console.log(document.querySelector(".parkEventsModal"))
                 renderEventsModal(events)
             })
         document.querySelector(".parkEventsModal").showModal()

@@ -1,6 +1,5 @@
 //renders the events modal when show events button is clicked
 export const renderEventsModal = (events) => {
-    console.log(events.total)
     document.querySelector(".parkEventsModal").innerHTML = buildEventsModal(events)
 }
 
