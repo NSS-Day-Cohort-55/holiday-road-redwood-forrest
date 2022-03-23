@@ -17,6 +17,7 @@ let parkDDSel = false;
 let eateryDDSel = false; 
 let attractionDDSel = false;
 let saveTripBtn = document.getElementById("saveTripBtn")
+import { renderFooter } from "./footer/renderFooter.js";
 
 const header = document.querySelector(".dropdownHeader")
 
@@ -115,6 +116,7 @@ const startHolidayTrip = () => {
     });
 }
 startHolidayTrip()
+renderFooter()
 
 //listener for park selection
 document.addEventListener("change", event => {
