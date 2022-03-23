@@ -1,0 +1,66 @@
+.dropdownHeader {
+    display: flex;
+    justify-content: space-around;
+    background-color: #FFFAC8;
+}
+
+.logoDiv {
+    flex: 1;
+    width: 100%;
+}
+
+.stateParkDiv {
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+}
+
+.stateDropdownDiv {
+    flex: 1;
+    padding: 10px;
+    margin: 0;
+}
+
+.parkDropdownDiv {
+    flex: 1;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+}
+
+/* #parkDropdown { 
+    width: 450px;
+} */
+
+.eateryDropdownDiv {
+    flex: 3;
+    background-color: #DFA408;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+}
+
+.attractionDropdownDiv {
+    flex: 3;
+    background-color: #744838;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+}
+
+.saveTripBtnDiv {
+    flex: 1;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+}
+#saveTripBtn {
+    margin-top: 30px;
+    margin-left: 35px;
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+}
