@@ -16,6 +16,6 @@ export const loadParks = (stateCode) => {
 };
 
 //return parkobj from park dataset using parkID
-export const getParkObj = (parkID) => {
-  return useParks().data.find(element => element.id === parkID)
+export const getParkObj = (pkCode) => {
+  return useParks().data.find(element => element.parkCode === pkCode)
 }

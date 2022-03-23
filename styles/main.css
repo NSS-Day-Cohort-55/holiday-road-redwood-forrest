@@ -1,9 +1,12 @@
 @import "./info-cards.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import "./weather.css";
+@import "./header.css";
 
 body {
     font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 li, ul {
@@ -16,7 +19,29 @@ li, ul {
     text-align: center;
 }
 
-.dropdownHeader {
+.mainContainer {
     display: flex;
-    justify-content: space-around;
+}
+
+.mainPreview {
+    flex: 5;
+    margin: 0;
+}
+
+.tripAside {
+    flex: 1;
+    padding-top: 20px;
+    padding-left: 20px;
+    margin: 0;
+    background-color: #DFA408;
+}
+
+.savedTrip {
+    padding-bottom: 20px;
+}
+.directionsBtn, .eventsBtn {
+    background-color: #744838;
+    color: #FFF;
+    padding: 10px;
+    border-radius: 5px;
 }
