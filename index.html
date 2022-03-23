@@ -10,31 +10,44 @@
 <body>
     <h1>Holiday Trip - Redwood Forest</h1>
     <header class="dropdownHeader">
-        <div class="stateDropdownDiv">
-            <!-- <select name="stateDD" id="stateDropdown">
-                <option value="${}">${}</option>
-            </select> -->
-        </div>
-        <div class="parkDropdownDiv">
+        <div class="logoDiv"><img src="pictures/logo.png" alt=""></div>
+        <div class="stateParkDiv">
+            <div class="stateDropdownDiv">
+                <!-- states list goes here -->
+            </div>
+            <div class="parkDropdownDiv">
+                <!-- parks list goes here -->
+            </div>
         </div>
         <div class="eateryDropdownDiv">
+            <!-- eateries list goes here -->
         </div>
         <div class="attractionDropdownDiv">
+            <!-- attractions list goes here -->
         </div>
+        <div class="saveTripBtnDiv"><button id="saveTripBtn">Save Trip</button></div>
     </header>
-    <section class="park">
+    <section class="mainContainer">
+        <main class="mainPreview">
+            <section class="park">
+            
+                <!-- park info here -->
+            
+                <section class="weather__container">
+                    <!-- weather data goes here -->
+                </section> 
+            
+            </section>
         
-        <!-- park info here -->
-    
-        <section class="weather__container">
-            <!-- weather data goes here -->
-        </section> 
-    
+            <div class="eatery"></div> 
+            <div class="attraction"></div>
+        </main>
+        <aside class="tripAside">
+            <div class="tripInfo">
+                <!-- Trip info goes here -->
+            </div>
+        </aside>
     </section>
-
-    <div class="eatery"></div> 
-    <div class="attraction"></div>
-
     <footer></footer>
     
   <script type="module" src="./scripts/main.js"></script>
