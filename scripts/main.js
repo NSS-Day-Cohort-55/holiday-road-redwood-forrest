@@ -22,35 +22,36 @@ let attractionDDSel = false;
 const saveTripBtn = document.getElementById("saveTripBtn")
 const header = document.querySelector(".dropdownHeader")
 
-//event listener for state dropdown, once state has been selected, we add listener for parks modal
+//event listener for state dropdown
 header.addEventListener("change", event => {
     if (event.target.id === "stateDropdown") {
         loadParks(event.target.value).then(parkData => {
             // console.log(parkData);
             parkList(parkData.data)
 
-            //listener for park selection
-            document.addEventListener("change", event => {
+        })
+    }
+})
 
-                if (event.target.id === "parkDropdown") {
-                    parkDDSel = true;
+//listener for park selection
+document.addEventListener("change", event => {
 
-                    const selectedPark = getParkObj(event.target.value)
-                    renderPark(selectedPark)
+    if (event.target.id === "parkDropdown") {
+        parkDDSel = true;
 
-                    //set up event listener for modal selection
-                    const parkModal = document.querySelector(".park__modal")
-                    document.addEventListener("click", event => {
-                        if (event.target.id === 'show_park_amenities') {
-                            parkModal.showModal()
-                        }
-                        if (event.target.id === 'close_park_amenities') {
-                            parkModal.close()
-                        }
-                        return event
-                    })
-                }
-            })
+        const selectedPark = getParkObj(event.target.value)
+        renderPark(selectedPark)
+
+        //set up event listener for modal selection
+        const parkModal = document.querySelector(".park__modal")
+        document.addEventListener("click", event => {
+            if (event.target.id === 'show_park_amenities') {
+                parkModal.showModal()
+            }
+            if (event.target.id === 'close_park_amenities') {
+                parkModal.close()
+            }
+            return event
         })
     }
 })
