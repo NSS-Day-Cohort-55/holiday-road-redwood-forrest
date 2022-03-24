@@ -41,7 +41,8 @@
     width: 450px;
 } */
 
-.eateryDropdownDiv, .attractionDropdownDiv {
+.eateryDropdownDiv, 
+.attractionDropdownDiv {
     flex: 1;
     background-color: #DFA408;
     padding: 10px;
@@ -49,23 +50,29 @@
     margin: 0;
 }
 
-.searchInputDiv {
+.searchInputDiv{
     flex: 3;
-    padding: 10px;
+    padding: .5em;
     width: 100%;
     margin: 0;
     background-color: #744838;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
 }
-.saveTripBtnDiv {
-    flex: 1;
-    padding: 10px;
-    width: 100%;
-    margin: 0;
+
+.searchInputDiv div{
+    font-size: .75rem;
+    color: white;
+    display:flex;
+    flex-direction: column;
 }
+
 #saveTripBtn {
-    margin-top: 30px;
-    margin-left: 35px;
-    padding: 10px;
+    margin-bottom: .75em;
+    padding: .5em;
     border-radius: 5px;
+    background-color: lightgrey;
     color: black;
 }

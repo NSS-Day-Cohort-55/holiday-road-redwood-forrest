@@ -76,8 +76,8 @@ const enableButton = () => {
         eateryDDSel === true &&
         attractionDDSel === true) {
         saveTripBtn.disabled = false
-        saveTripBtn.style.backgroundColor = "#744838";
-        saveTripBtn.style.color = 'white';
+        saveTripBtn.style.backgroundColor = "#DFA408";
+        saveTripBtn.style.color = 'black';
     }
 }
 

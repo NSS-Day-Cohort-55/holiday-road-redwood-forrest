@@ -17,9 +17,9 @@ export const renderEatery = (eateryId) => {
                     <ul>
                         ${renderHelpers.getAllAmenities(eateryObj.ameneties)}
                     </ul>
-                    <button id="eateryDialogCloseButton">Close</button>
+                    <button id="eateryDialogCloseButton" class="button">Close</button>
                 </dialog>
-                <button type="button" id="eateryAmenitiesButton">Show Amenities</button>
+                <button type="button" id="eateryAmenitiesButton" class="button">Show Amenities</button>
             </div>
         </div>
         `

@@ -6,8 +6,20 @@
 
 body {
     font-family: 'Roboto', sans-serif;
+    font-size: 20px;
     margin: 0;
     padding: 0;
+}
+
+p {
+    line-height: 1.5rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    line-height: .9em;
 }
 
 li, ul {
@@ -18,6 +30,11 @@ li, ul {
 
 .park h1 {
     text-align: center;
+}
+
+.park {
+    padding: 1.5em;
+    background-color: #FFFAC8;
 }
 
 .mainContainer {
@@ -50,4 +67,34 @@ li, ul {
     color: #FFF;
     padding: 10px;
     border-radius: 5px;
+}
+
+
+.button {
+    padding: .75em;
+    border-radius: 5px;
+    background-color: #744838;
+    color: white;
+}
+
+.button--light{
+    background-color: #DFA408;
+    color:black;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: #b67158;
+}
+
+.button--light:hover {
+    background-color: #b48606;
+}
+
+.modal button{
+    background-color: #DFA408;
+}
+
+.modal button:hover {
+    background-color: #b48606;
 }

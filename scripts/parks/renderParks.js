@@ -16,7 +16,7 @@ const buildPark = (park) => {
     <h2>${park.fullName}</h2>
     <p>${park.description}</p>
     <p>${park.addresses[0].city}, ${park.addresses[0].stateCode}</p>
-    <button id="show_park_amenities">Show Activities</button>
+    <button id="show_park_amenities" class="button">Show Activities</button>
     <dialog class="park__modal">
         <ul>
             ${buildActivities(park)}
