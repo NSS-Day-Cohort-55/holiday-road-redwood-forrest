@@ -4,11 +4,11 @@ import { renderPark } from "./parks/renderParks.js";
 import { renderEventsModal } from "./parks/parkEvents.js";
 import { loadStates } from "./states/statesDataManager.js";
 import { stateList } from "./states/stateList.js";
-import { loadParks, getParkObj, getEvents } from "./parks/ParkDataManager.js";
+import { loadParks, getParkObj, getEvents, searchParks } from "./parks/ParkDataManager.js";
 import { parkList } from "./parks/parkList.js";
-import { loadEateries, useEateries } from "./eateries/EateryDataManager.js";
+import { loadEateries, useEateries, searchEateries } from "./eateries/EateryDataManager.js";
 import { eateryList } from "./eateries/eateryList.js";
-import { loadAttractions, useAttractions } from "./attractions/AttractionDataManager.js";
+import { loadAttractions, useAttractions, searchAttractions } from "./attractions/AttractionDataManager.js";
 import { attractionList } from "./attractions/attractionList.js"
 import { createTrip, getTrips, useTrips } from "./trips/TripDataManager.js";
 import { renderTrips } from "./trips/renderTrips.js"
@@ -26,7 +26,6 @@ const header = document.querySelector(".dropdownHeader")
 header.addEventListener("change", event => {
     if (event.target.id === "stateDropdown") {
         loadParks(event.target.value).then(parkData => {
-            // console.log(parkData);
             parkList(parkData.data)
 
             //listener for park selection
@@ -99,7 +98,6 @@ const buildTripObj = () => {
     const attDDEl = document.getElementById("attractionDropdown")
     const attName = attDDEl.options[attDDEl.selectedIndex].text;
 
-    // console.log(parkName, eateryName, attName);
     const tripObject = {
         park: parkName,
         parkCode: parkCode,
@@ -119,7 +117,7 @@ saveTripBtn.addEventListener("click", (event) => {
         createTrip(newTrip)
             .then(response => renderTrips(response))
 
-        // disable the buton after saving each trip
+        // disable the button after saving each trip
         if (saveTripBtn.disabled === false) {
             saveTripBtn.disabled = true
             saveTripBtn.style.color = "black"
@@ -164,6 +162,80 @@ const resetTrip = () => {
     eateryDDSel = false;
     attractionDDSel = false;
 }
+
+// search the input string in parks, eateries and attractions API
+document.querySelector("#searchInput").addEventListener("keypress", keyPressEvent => {
+    if (keyPressEvent.charCode === 13) {
+
+        // Render the search result in a dialog box
+        let searchHTML = '<dialog class="search__modal"><h2>Look what we found</h2>';
+
+        const promisePark = new Promise((resolve, reject) => {
+            resolve(searchParks(keyPressEvent.target.value)
+            .then(foundParks => {
+                if (foundParks && foundParks.data.length !== 0) {
+                    const foundPark = foundParks.data.find(fp => {
+                        // return fp.fullName.includes(keyPressEvent.target.value)
+                        return fp.fullName === keyPressEvent.target.value
+                    })
+                    if (foundPark) {
+                        searchHTML += `<p>Park: ${foundPark.fullName}</p>
+                                         <p style="width: 400px;">Description: ${foundPark.description}</p>
+                                         <ul>Activities: 
+                                            <li>${foundPark.activities[0].name}</li>
+                                            <li>${foundPark.activities[1].name}</li>
+                                         </ul>
+                                         <br>
+                                        `; 
+                    }    
+                }
+                return foundParks        
+            }))
+        });
+
+        const promiseEatery = new Promise((resolve, reject) => {
+            resolve(searchEateries(keyPressEvent.target.value)
+            .then(foundEatery => {
+                if (foundEatery.length !== 0) {
+                    searchHTML += `<p>Eatery: ${foundEatery[0].businessName}</p>
+                                    <p>${foundEatery[0].city}, ${foundEatery[0].state}</p>
+                                    <p style="width: 400px;">${foundEatery[0].description}</p>
+                                    `;
+                } 
+                return foundEatery   
+            })
+        )})
+
+        const promiseAtt = new Promise((resolve, reject) => {
+            resolve(searchAttractions(keyPressEvent.target.value)
+            .then(foundAtt => {     
+                if (foundAtt.length !== 0) {
+                    searchHTML += `<p>Attraction: ${foundAtt[0].name}</p>
+                                    <p>${foundAtt[0].city}, ${foundAtt[0].state}</p>
+                                    <p style="width: 400px;">${foundAtt[0].description}</p>
+                                    `;
+                }
+                return foundAtt
+            })
+        )})
+
+        Promise.all([promisePark, promiseEatery, promiseAtt]).then(results => {
+            promisePark.then(value1 => {
+                promiseEatery.then(value2 => {
+                    promiseAtt.then(value3 => {
+                        searchHTML += '<button class="button button--close" id="close_search_results">Close</button></dialog>';
+                        document.getElementById('searchResults').innerHTML = searchHTML;
+                            document.querySelector(".search__modal").showModal()
+
+                        document.getElementById("close_search_results").addEventListener("click", event => {
+                            document.querySelector(".search__modal").close()
+                        });
+                    })
+                })
+            });
+        })
+    }
+});
 
 //app startup
 const startHolidayTrip = () => {

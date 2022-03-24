@@ -13,7 +13,6 @@
     display: flex;
     flex-direction: column;
     flex: 3;
-    padding: 10px;
     width: 100%;
     margin: 0;
 }
@@ -31,26 +30,32 @@
     margin: 0;
 }
 
+.eateryAttDiv {
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    width: 100%;
+    margin: 0;
+}
 /* #parkDropdown { 
     width: 450px;
 } */
 
-.eateryDropdownDiv {
-    flex: 3;
+.eateryDropdownDiv, .attractionDropdownDiv {
+    flex: 1;
     background-color: #DFA408;
     padding: 10px;
     width: 100%;
     margin: 0;
 }
 
-.attractionDropdownDiv {
+.searchInputDiv {
     flex: 3;
-    background-color: #744838;
     padding: 10px;
     width: 100%;
     margin: 0;
+    background-color: #744838;
 }
-
 .saveTripBtnDiv {
     flex: 1;
     padding: 10px;

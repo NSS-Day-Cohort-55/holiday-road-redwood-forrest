@@ -13,4 +13,8 @@ return fetch(`http://holidayroad.nss.team/bizarreries`)
     })
 };
 
-// ?state=${parkCode.split('-')[0]}
+export const searchAttractions = (userInput) => {
+  return fetch(`http://holidayroad.nss.team/bizarreries?q=${userInput}`)
+    .then(response => response.json())
+    .then(dataFound => {return dataFound})
+}

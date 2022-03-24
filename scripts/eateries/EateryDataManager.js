@@ -12,3 +12,9 @@ return fetch(`http://holidayroad.nss.team/eateries`)
       return eateryArray
     })
 };
+
+export const searchEateries = (userInput) => {
+  return fetch(`http://holidayroad.nss.team/eateries?q=${userInput}`)
+    .then(response => response.json())
+    .then(dataFound => {return dataFound})
+}
