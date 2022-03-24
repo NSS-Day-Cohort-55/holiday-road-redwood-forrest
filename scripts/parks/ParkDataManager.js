@@ -26,3 +26,9 @@ export const getEvents = (parkCode) => {
     .then(response => response.json())
     .then(eventsArray => eventsArray)
 }
+
+export const searchParks = (userInput) => {
+  return fetch(`https://developer.nps.gov/api/v1/parks?api_key=${settings.npsKey}&q=${userInput}`)
+    .then(response => response.json())
+    .then(dataFound => {return dataFound})
+}
