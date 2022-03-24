@@ -36,4 +36,8 @@ export const createTrip = tripObj => {
 
     })
         .then(response => response.json())
+        .then(parsedResponse => {
+            trips.push(parsedResponse)
+            return parsedResponse
+        })
 }

@@ -17,9 +17,9 @@ export const renderAttraction = (attractionId) => {
                     <ul>
                         ${renderHelpers.getAllAmenities(attractionObj.ameneties)}
                     </ul>
-                    <button id="attractionsDialogCloseButton">Close</button>
+                    <button id="attractionsDialogCloseButton" class="button">Close</button>
                 </dialog>
-                <button type="button" id="attractionsAmenitiesButton">Show Amenities</button>
+                <button type="button" id="attractionsAmenitiesButton" class="button button--light">Show Amenities</button>
             </div>
         </div>
         `

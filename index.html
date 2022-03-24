@@ -8,7 +8,6 @@
     <title>Holiday Trip</title>
 </head>
 <body>
-    <h1>Holiday Trip - Redwood Forest</h1>
     <header class="dropdownHeader">
         <div class="logoDiv"><img src="pictures/logo.png" alt=""></div>
         <div class="stateParkDiv">
@@ -19,17 +18,33 @@
                 <!-- parks list goes here -->
             </div>
         </div>
-        <div class="eateryDropdownDiv">
-            <!-- eateries list goes here -->
+        <div class="eateryAttDiv">
+            <div class="eateryDropdownDiv">
+                <!-- eateries list goes here -->
+            </div>
+            <div class="attractionDropdownDiv">
+                <!-- attractions list goes here -->
+            </div>
         </div>
-        <div class="attractionDropdownDiv">
-            <!-- attractions list goes here -->
+        <div class="searchInputDiv">
+            <div>
+                <label for="searchInput">Search</label>
+                <input id="searchInput" type="text">
+                <div id="searchResults"></div>
+                <!-- <div class="img-div"><img src="pictures/search-icon.png"></div> -->
+            </div>
+            <button id="saveTripBtn" class="button">Save Trip</button>
         </div>
-        <div class="saveTripBtnDiv"><button id="saveTripBtn">Save Trip</button></div>
-    </header>
+        <!-- <div class="saveTripBtnDiv">
+            <img class="searchIcon" src="./pictures/search-icon.png" alt="search icon image">
+        </div> -->
+    </header>    
+    
     <section class="mainContainer">
+        
         <main class="mainPreview">
             <section class="park">
+                <h1>Holiday Trip - Redwood Forest</h1>
             
                 <!-- park info here -->
             
@@ -46,6 +61,10 @@
             <div class="tripInfo">
                 <!-- Trip info goes here -->
             </div>
+            <dialog class="modal parkEventsModal" id="eventsModal">
+                <!-- Event info goes here -->
+            </dialog>
+
         </aside>
     </section>
     <footer></footer>
