@@ -138,6 +138,7 @@ const resetTrip = () => {
     const parkDiv = document.querySelector(".parkDropdownDiv")
     const tripPreview = document.querySelector(".mainPreview")
 
+    //reset dropdowns to top selection
     for (let dropdown of [stateDD, eateryDD, attractionDD]) {
         dropdown.selectedIndex = 0
     }

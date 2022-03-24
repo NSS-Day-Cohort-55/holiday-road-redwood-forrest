@@ -1,5 +1,5 @@
-@import "./info-cards.css";
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import "./info-cards.css";
 @import "./weather.css";
 @import "./header.css";
 @import "./footer.css";
@@ -44,6 +44,7 @@ li, ul {
 .savedTrip {
     padding-bottom: 20px;
 }
+
 .directionsBtn, .eventsBtn {
     background-color: #744838;
     color: #FFF;
