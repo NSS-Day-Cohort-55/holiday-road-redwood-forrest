@@ -4,7 +4,7 @@ import { loadEateries, useEateries } from "../eateries/EateryDataManager.js";
 import { loadAttractions, useAttractions } from "../attractions/AttractionDataManager.js";
 
 
-export const renderDirectionsModal = (tripObj) => {
+export const renderDirectionsModal = (tripObj, tripEl) => {
     // This entire block of code is for converting trip locations into lat/long values and then getting directions.
     // This function calls the grasshopper api to generate directions list.
     // This function also handles creating and displaying one saved trip "directions" modal.
@@ -13,6 +13,7 @@ export const renderDirectionsModal = (tripObj) => {
 
     // Create lat/lon array
     let tripCoordinates = [];
+
 
     // Helper function for generating location lat/lon and adding to tripCoordinates.
     // Only works with eateries and attractions.
@@ -30,13 +31,19 @@ export const renderDirectionsModal = (tripObj) => {
             .catch(error => console.log('error', error));
     }
 
+    // This one should be the first element in tripCoordinates
+    const getTripStartLatLon = (cityStateString) => {
+        return getLatLon(cityStateString);
+    }
+
+
     // Get park lat/lon
     // DO THIS ONE LAST
     const parkLatLon = () => {
         return fetch(`https://developer.nps.gov/api/v1/parks?api_key=${settings.npsKey}&parkCode=${tripObj.parkCode}`)
             .then(data => data.json())
             .then(json => {
-                tripCoordinates.push([json.latitude, json.longitude])
+                tripCoordinates.push([Number(json.data[0].latitude), Number(json.data[0].longitude)])
                 return json;
             })
     }
@@ -61,15 +68,60 @@ export const renderDirectionsModal = (tripObj) => {
             })
     }
 
-    Promise.all([eateryLatLon(), attractionLatLon()])
-        .then(values => {
-            console.log(values);
-            console.log(tripCoordinates);
+    const getDirections = (coordsArray) => {
+        let coordsString = ``;
+        for (let coord of coordsArray){
+            coordsString += `point=${coord.join()}&`
+        }
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        return fetch(`https://graphhopper.com/api/1/route?${coordsString}profile=car&locale=en&key=${settings.graphhopperKey}`, requestOptions)
+            .then(response => response.json())
+            .catch(error => console.log('error', error));
+    }
+
+    const createModal = (directionsArray, coordsArray) => {
+        return fetch("/scripts/directions/directionsModal.html")
+        .then(response => response.text())
+        .then(modalHTMLString => {
+            let HTMLString = ``;
+            let coordsGoogleString = `https://www.google.com/maps/dir/`;
+            tripEl.innerHTML += modalHTMLString;
+            let modalBodyEl = document.querySelector(".modal__body");
+
+            for (let i of directionsArray){
+                HTMLString += `
+                <p>${i.text}</p>
+                `
+            }
+            for (let i of coordsArray){
+                coordsGoogleString += `${i.join()}/`;
+            }
+            HTMLString += `<a target="_blank" href=${coordsGoogleString}>See another route on Google Maps</a>`;
+            modalBodyEl.insertAdjacentHTML('afterbegin', HTMLString)
         })
-    console.log(tripCoordinates[0]);
-    // Call graphhopper api with values from lat/lon array
+    }
 
-    // Generate and populate Modal
 
-    // Show Modal
+    // Start Location lat/lon added to array
+    getTripStartLatLon("Nashville, TN")
+        // Eateries and Attractions lat/lon added to array
+        .then(() => { return Promise.all([eateryLatLon(), attractionLatLon()]) })
+        // Park Destination lat/lon added to array
+        .then(() => parkLatLon())
+        // Call graphhopper directions api with values from lat/lon array
+        .then(() => getDirections(tripCoordinates))
+        // Generate and populate modal
+        .then(response => createModal(response.paths[0].instructions, tripCoordinates))
+        // Show Modal
+        .then(() => {
+            tripEl.querySelector("dialog").showModal();
+            tripEl.querySelector("dialog > button").addEventListener("click", () => {
+                tripEl.querySelector("dialog").close();
+            })
+        })
+
 }

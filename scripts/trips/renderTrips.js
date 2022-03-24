@@ -14,6 +14,6 @@ export const renderTrips = (tripObj) => {
     tripEl.innerHTML += tripHTML
 
     tripEl.querySelector(".savedTrip > .tripButtons > .directionsBtn").addEventListener("click", () => {
-        renderDirectionsModal(tripObj)
+        renderDirectionsModal(tripObj, tripEl.querySelector(".savedTrip"))
     })
 }
