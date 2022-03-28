@@ -1,8 +1,8 @@
-import { renderDirectionsModal } from "../directions/renderDirectionsModal.js"
+import { createDirectionsModal } from "../directions/renderDirectionsModal.js"
 
 export const renderTrips = (tripObj) => {
     const tripEl = document.querySelector(".tripInfo")
-	let tripHTML = `<section class="savedTrip">
+	let tripHTML = `<section class="savedTrip" id="trip--${tripObj.id}">
                         <h3>${tripObj.park}</h3>
                         <p>Eatery: ${tripObj.eatery}</p>
                         <p>Attraction: ${tripObj.attraction}</p>
@@ -11,9 +11,18 @@ export const renderTrips = (tripObj) => {
                             <button type="button" id="getEvents--${tripObj.id}"class="eventsBtn button">Show Events</button>  
                         </div>
                     </section>`
-    tripEl.innerHTML += tripHTML
+    tripEl.insertAdjacentHTML('beforeend', tripHTML);
 
-    tripEl.querySelector(".savedTrip > .tripButtons > .directionsBtn").addEventListener("click", () => {
-        renderDirectionsModal(tripObj, tripEl.querySelector(".savedTrip"))
+    let thisTripEl = tripEl.querySelector(`#trip--${tripObj.id}`);
+    let buttonEl = thisTripEl.querySelector(`#getDirections--${tripObj.id}`);
+    thisTripEl.querySelector(`#getDirections--${tripObj.id}`).addEventListener("click", () => {
+        if (!thisTripEl.querySelector("dialog")) {
+            createDirectionsModal(tripObj, thisTripEl)
+            .then(() => {
+                thisTripEl.querySelector("dialog").showModal();
+            })
+        } else {
+            thisTripEl.querySelector("dialog").showModal();
+        }
     })
 }

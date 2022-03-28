@@ -4,7 +4,7 @@ import { loadEateries, useEateries } from "../eateries/EateryDataManager.js";
 import { loadAttractions, useAttractions } from "../attractions/AttractionDataManager.js";
 
 
-export const renderDirectionsModal = (tripObj, tripEl) => {
+export const createDirectionsModal = (tripObj, tripEl) => {
     // This entire block of code is for converting trip locations into lat/long values and then getting directions.
     // This function calls the grasshopper api to generate directions list.
     // This function also handles creating and displaying one saved trip "directions" modal.
@@ -78,9 +78,27 @@ export const renderDirectionsModal = (tripObj, tripEl) => {
             method: 'GET',
             redirect: 'follow'
         };
-        return fetch(`https://graphhopper.com/api/1/route?${coordsString}profile=car&locale=en&key=${settings.graphhopperKey}`, requestOptions)
-            .then(response => response.json())
-            .catch(error => console.log('error', error));
+
+        function parseJSON(response) {
+            return new Promise((resolve) => response.json()
+            .then((json) => resolve({
+                status: response.status,
+                ok: response.ok,
+                json
+            })));
+        }
+
+        return new Promise((resolve, reject) => {
+            fetch(`https://graphhopper.com/api/1/route?${coordsString}profile=car&locale=en&key=${settings.graphhopperKey}`, requestOptions)
+                .then(parseJSON)
+                .then((response) => {
+                    if (response.ok){
+                        return resolve(response.json);
+                    }
+                    return reject({type: "graphhopper", message: response.json.message});
+                })
+                //.catch(error => console.log('error', error));
+        })
     }
 
     const createModal = (directionsArray, coordsArray) => {
@@ -89,8 +107,9 @@ export const renderDirectionsModal = (tripObj, tripEl) => {
         .then(modalHTMLString => {
             let HTMLString = ``;
             let coordsGoogleString = `https://www.google.com/maps/dir/`;
-            tripEl.innerHTML += modalHTMLString;
-            let modalBodyEl = document.querySelector(".modal__body");
+            tripEl.insertAdjacentHTML('beforeend', modalHTMLString);
+            // tripEl is passed in at the createDirectionsModal call
+            let modalBodyEl = tripEl.querySelector(".modal__body");
 
             for (let i of directionsArray){
                 HTMLString += `
@@ -102,26 +121,27 @@ export const renderDirectionsModal = (tripObj, tripEl) => {
             }
             HTMLString += `<a target="_blank" href=${coordsGoogleString}>See another route on Google Maps</a>`;
             modalBodyEl.insertAdjacentHTML('afterbegin', HTMLString)
+
+            tripEl.querySelector("dialog > button").addEventListener("click", () => {
+                tripEl.querySelector("dialog").close();
+            })
         })
     }
 
 
     // Start Location lat/lon added to array
-    getTripStartLatLon("Nashville, TN")
+    return getTripStartLatLon("Nashville, TN")
         // Eateries and Attractions lat/lon added to array
-        .then(() => { return Promise.all([eateryLatLon(), attractionLatLon()]) })
+        .then(() => {return Promise.all([eateryLatLon(), attractionLatLon()])} )
         // Park Destination lat/lon added to array
         .then(() => parkLatLon())
         // Call graphhopper directions api with values from lat/lon array
         .then(() => getDirections(tripCoordinates))
         // Generate and populate modal
-        .then(response => createModal(response.paths[0].instructions, tripCoordinates))
-        // Show Modal
-        .then(() => {
-            tripEl.querySelector("dialog").showModal();
-            tripEl.querySelector("dialog > button").addEventListener("click", () => {
-                tripEl.querySelector("dialog").close();
-            })
+        .then((response) => { return createModal(response.paths[0].instructions, tripCoordinates);} )
+        .catch (error => {
+            console.log(error.message);
+            if (error.type === "graphhopper")
+                return createModal([{text: "No directions available"}], tripCoordinates)
         })
-
 }
