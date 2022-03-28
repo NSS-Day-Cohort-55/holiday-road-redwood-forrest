@@ -241,6 +241,7 @@ document.querySelector("#searchInput").addEventListener("keypress", keyPressEven
 
 //app startup
 const startHolidayTrip = () => {
+
     saveTripBtn.disabled = true;
 
     loadStates().then(stateData => {
